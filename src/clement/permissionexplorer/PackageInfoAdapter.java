@@ -38,12 +38,5 @@ public class PackageInfoAdapter extends ArrayAdapter<PackageInfo>
         imageView.setImageDrawable(appIcon);
 
         return rowView;
-
-        /*
-        TextView view = new TextView(getContext());
-
-
-        view.setText(appname);
-        return view; */
     }
 }
