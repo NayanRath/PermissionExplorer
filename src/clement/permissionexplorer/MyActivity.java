@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,43 +35,6 @@ public class MyActivity extends ListActivity
 
         PackageInfoAdapter adapter = new PackageInfoAdapter(this, appinstall);
         setListAdapter(adapter);
-
-        InputStream is = getResources().openRawResource(R.raw.permissions);
-
-        InputStreamReader inputreader = new InputStreamReader(is);
-        BufferedReader buffreader = new BufferedReader(inputreader);
-        String line;
-        StringBuilder text = new StringBuilder();
-
-        try
-        {
-            while (( line = buffreader.readLine()) != null)
-            {
-                text.append(line);
-                text.append('\n');
-            }
-        }
-        catch (IOException e)
-        {
-        }
-
-        /*
-        try
-        {
-
-            JSONObject jsonArray = new JSONObject(new String(text));
-            //jsonArray = jsonArray.getJSONObject("permission");
-            //JSONArray array = jsonArray.getJSONArray("permission");
-            jsonArray = jsonArray;
-            for (int i = 0; i < jsonArray.length(); i++)
-            {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-            }
-        } catch (JSONException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        */
     }
 
     @Override
