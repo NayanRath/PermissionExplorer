@@ -31,7 +31,7 @@ public class MainActivity extends ListActivity
     {
         PackageInfo packageInfo = appinstall.get(position);
 
-        Intent intent = new Intent(this, PackageInfoView.class);
+        Intent intent = new Intent(this, PackageInfoActivity.class);
         intent.putExtra("packageInfo", packageInfo);
 
         this.startActivity(intent);

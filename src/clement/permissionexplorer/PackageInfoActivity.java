@@ -27,7 +27,7 @@ import java.util.List;
  * Time: 21:43
  * To change this template use File | Settings | File Templates.
  */
-public class PackageInfoView extends Activity
+public class PackageInfoActivity extends Activity
 {
     public void onCreate(Bundle savedInstanceState)
     {
