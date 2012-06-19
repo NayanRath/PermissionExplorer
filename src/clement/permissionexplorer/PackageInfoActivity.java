@@ -30,10 +30,14 @@ import android.widget.TextView;
  */
 public class PackageInfoActivity extends Activity
 {
+    private JSONObject mPermissionsDescription;
+
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.package_info);
+
+        mPermissionsDescription = getMap();
 
         Bundle extras = getIntent().getExtras();
         if(extras !=null)
@@ -49,10 +53,14 @@ public class PackageInfoActivity extends Activity
             appNameView.setText(appName);
             appIconView.setImageDrawable(appIcon);
 
-            List<String> permissions = new ArrayList(Arrays.asList(packageInfo.requestedPermissions));
+            List<String> permissions = new ArrayList<String>();
+            for(String permission : packageInfo.requestedPermissions)
+            {
+                permissions.add(formatPermission(permission));
+            }
 
             ListView listView = (ListView)findViewById(R.id.permission_list);
-            PermissionAdapter adapter = new PermissionAdapter(this,  permissions);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,  permissions);
             listView.setAdapter(adapter);
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -60,23 +68,31 @@ public class PackageInfoActivity extends Activity
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
                 {
-                    showDialog();
+                    String permission = (String)adapterView.getAdapter().getItem(i);
+                    try
+                    {
+                        String description = mPermissionsDescription.getString(permission);
+                        showDialog(permission, description);
+                    }
+                    catch (JSONException e)
+                    {
+                        e.printStackTrace();
+                    }
                 }
             }) ;
         }
     }
 
-    private void showDialog()
+    private void showDialog(String title, String description)
     {
         // custom dialog
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.permission_dialog);
-        dialog.setTitle("Title...");
+        dialog.setTitle(title);
 
         // set the custom dialog components - text, image and button
         TextView text = (TextView) dialog.findViewById(R.id.description);
-        text.setText("Android custom dialog example!");
-
+        text.setText(description);
 
         Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
         // if button is clicked, close the custom dialog
@@ -92,18 +108,36 @@ public class PackageInfoActivity extends Activity
 
         dialog.show();
     }
-    private HashMap<String, String> getMap()
+    private JSONObject getMap()
     {
-        InputStream is = getResources().openRawResource(R.raw.permissions);
+        String text = readTextFile(R.raw.permissions);
 
-        InputStreamReader inputreader = new InputStreamReader(is);
-        BufferedReader buffreader = new BufferedReader(inputreader);
+        try
+        {
+            JSONObject root = new JSONObject(text);
+            return root.getJSONObject("permission");
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private String readTextFile(int resource)
+    {
+        InputStream inputStream = getResources().openRawResource(resource);
+
+        InputStreamReader inputReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputReader);
+
         String line;
         StringBuilder text = new StringBuilder();
 
         try
         {
-            while (( line = buffreader.readLine()) != null)
+            while (( line = bufferedReader.readLine()) != null)
             {
                 text.append(line);
                 text.append('\n');
@@ -113,27 +147,19 @@ public class PackageInfoActivity extends Activity
         {
         }
 
+        return new String(text);
+    }
 
-        try
+    private String formatPermission(String permission)
+    {
+        String formattedPermission = "";
+
+        String[] split = permission.split("\\.");
+        if(split.length >= 1)
         {
-            JSONObject jsonArray = (new JSONObject(new String(text))).getJSONObject("permission");
-            HashMap<String, String> a = new  HashMap<String, String>();
-            Iterator itr = jsonArray.keys();
-            while(itr.hasNext())
-            {
-                String key = (String)itr.next();
-                String value = (String)jsonArray.get(key);
-                a.put(key, value);
-            }
+            formattedPermission = split[split.length - 1];
 
-
-
-            return a;
         }
-        catch (JSONException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        return null;
+        return formattedPermission;
     }
 }
