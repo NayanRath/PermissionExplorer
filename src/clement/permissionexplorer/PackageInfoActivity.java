@@ -4,21 +4,16 @@ import android.app.Activity;
 import android.content.pm.PackageInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -48,23 +43,10 @@ public class PackageInfoActivity extends Activity
             appNameView.setText(appName);
             appIconView.setImageDrawable(appIcon);
 
-            HashMap<String, String> temp = getMap();
-
-            List<String> permissions = new ArrayList<String>();
-
-            for(String permission : packageInfo.requestedPermissions)
-            {
-                String[] splitted = permission.split("\\.");
-
-                if(splitted.length >= 1)
-                {
-                    String a = splitted[splitted.length - 1];
-                    permissions.add(a);
-                }
-            }
+            List<String> permissions = new ArrayList(Arrays.asList(packageInfo.requestedPermissions));
 
             ListView listView = (ListView)findViewById(R.id.permission_list);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, permissions);
+            PermissionAdapter adapter = new PermissionAdapter(this,  permissions);
             listView.setAdapter(adapter);
         }
     }
