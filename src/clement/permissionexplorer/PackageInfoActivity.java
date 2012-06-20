@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.pm.PackageInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import org.json.JSONException;
@@ -67,15 +68,19 @@ public class PackageInfoActivity extends Activity
                         return;
 
                     String permission = (String)adapterView.getAdapter().getItem(i);
+                    String description = "No description available.";
+
                     try
                     {
-                        String description = mPermissionsDescription.getString(permission);
-                        showDialog(permission, description);
+                        description = mPermissionsDescription.getString(permission);
+
                     }
                     catch (JSONException e)
                     {
-                        e.printStackTrace();
+                        Log.w("PermissionExplorer", "No description for permission " + permission);
                     }
+
+                    showDialog(permission, description);
                 }
             }) ;
         }
@@ -83,17 +88,16 @@ public class PackageInfoActivity extends Activity
 
     private void showDialog(String title, String description)
     {
-        // custom dialog
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.permission_dialog);
         dialog.setTitle(title);
 
-        // set the custom dialog components - text, image and button
         TextView text = (TextView) dialog.findViewById(R.id.description);
         text.setText(description);
 
         Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-        // if button is clicked, close the custom dialog
+
+        // If button is clicked, close the custom dialog.
         dialogButton.setOnClickListener(new View.OnClickListener()
         {
 
