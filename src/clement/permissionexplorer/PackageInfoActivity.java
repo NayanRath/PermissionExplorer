@@ -51,7 +51,7 @@ public class PackageInfoActivity extends Activity
             List<String> permissions = new ArrayList<String>();
             for(String permission : packageInfo.requestedPermissions)
             {
-                permissions.add(formatPermission(permission));
+                permissions.add(prettyPrintPermission(permission));
             }
 
             ListView listView = (ListView)findViewById(R.id.permission_list);
@@ -123,7 +123,7 @@ public class PackageInfoActivity extends Activity
         return null;
     }
 
-    private String formatPermission(String permission)
+    private String prettyPrintPermission(String permission)
     {
         String formattedPermission = "";
 
