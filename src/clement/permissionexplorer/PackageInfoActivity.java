@@ -33,7 +33,7 @@ public class PackageInfoActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.package_info);
 
-        mPermissionsDescription = getMap();
+        mPermissionsDescription = getPermissionsDescription();
 
         Bundle extras = getIntent().getExtras();
         if(extras !=null)
@@ -110,7 +110,7 @@ public class PackageInfoActivity extends Activity
 
         dialog.show();
     }
-    private JSONObject getMap()
+    private JSONObject getPermissionsDescription()
     {
         String text = Utils.readTextFile(this, R.raw.permissions);
 
