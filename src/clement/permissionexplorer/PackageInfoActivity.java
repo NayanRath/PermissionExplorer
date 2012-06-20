@@ -63,6 +63,9 @@ public class PackageInfoActivity extends Activity
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
                 {
+                    if(mPermissionsDescription == null)
+                        return;
+
                     String permission = (String)adapterView.getAdapter().getItem(i);
                     try
                     {
