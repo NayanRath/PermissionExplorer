@@ -2,7 +2,6 @@ package clement.permissionexplorer;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -10,13 +9,9 @@ import android.view.View;
 import android.widget.*;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+
 import java.util.*;
-import android.view.View;
-import android.view.View.OnClickListener;
+
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -110,7 +105,7 @@ public class PackageInfoActivity extends Activity
     }
     private JSONObject getMap()
     {
-        String text = readTextFile(R.raw.permissions);
+        String text = Utils.readTextFile(this, R.raw.permissions);
 
         try
         {
@@ -123,31 +118,6 @@ public class PackageInfoActivity extends Activity
         }
 
         return null;
-    }
-
-    private String readTextFile(int resource)
-    {
-        InputStream inputStream = getResources().openRawResource(resource);
-
-        InputStreamReader inputReader = new InputStreamReader(inputStream);
-        BufferedReader bufferedReader = new BufferedReader(inputReader);
-
-        String line;
-        StringBuilder text = new StringBuilder();
-
-        try
-        {
-            while (( line = bufferedReader.readLine()) != null)
-            {
-                text.append(line);
-                text.append('\n');
-            }
-        }
-        catch (IOException e)
-        {
-        }
-
-        return new String(text);
     }
 
     private String formatPermission(String permission)
