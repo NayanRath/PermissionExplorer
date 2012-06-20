@@ -41,12 +41,15 @@ public class PackageInfoActivity extends Activity
             PackageInfo packageInfo = (PackageInfo)extras.getParcelable("packageInfo");
 
             TextView appNameView = (TextView)findViewById(R.id.appName);
+            TextView appVersionView = (TextView)findViewById(R.id.appVersion);
             ImageView appIconView = (ImageView)findViewById(R.id.appIcon);
 
             String appName = packageInfo.applicationInfo.loadLabel(getPackageManager()).toString();
+            String appVersion = packageInfo.versionName;
             Drawable appIcon =  packageInfo.applicationInfo.loadIcon(getPackageManager());
 
             appNameView.setText(appName);
+            appVersionView.setText(appVersion);
             appIconView.setImageDrawable(appIcon);
 
             List<Permission> permissions = new ArrayList<Permission>();
