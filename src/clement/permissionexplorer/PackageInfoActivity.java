@@ -49,14 +49,14 @@ public class PackageInfoActivity extends Activity
             appNameView.setText(appName);
             appIconView.setImageDrawable(appIcon);
 
-            List<String> permissions = new ArrayList<String>();
+            List<Permission> permissions = new ArrayList<Permission>();
             for(String permission : packageInfo.requestedPermissions)
             {
-                permissions.add(prettyPrintPermission(permission));
+                permissions.add(new Permission(permission));
             }
 
             ListView listView = (ListView)findViewById(R.id.permission_list);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,  permissions);
+            PermissionAdapter adapter = new PermissionAdapter(this, permissions);
             listView.setAdapter(adapter);
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -67,12 +67,13 @@ public class PackageInfoActivity extends Activity
                     if(mPermissionsDescription == null)
                         return;
 
-                    String permission = (String)adapterView.getAdapter().getItem(i);
+                    Permission permission = (Permission)adapterView.getAdapter().getItem(i);
+                    String permissionName = permission.prettyPrintName();
                     String description = "No description available.";
 
                     try
                     {
-                        description = mPermissionsDescription.getString(permission);
+                        description = mPermissionsDescription.getString(permissionName);
 
                     }
                     catch (JSONException e)
@@ -80,7 +81,7 @@ public class PackageInfoActivity extends Activity
                         Log.w("PermissionExplorer", "No description for permission " + permission);
                     }
 
-                    showDialog(permission, description);
+                    showDialog(permissionName, description);
                 }
             }) ;
         }
@@ -125,18 +126,5 @@ public class PackageInfoActivity extends Activity
         }
 
         return null;
-    }
-
-    private String prettyPrintPermission(String permission)
-    {
-        String formattedPermission = "";
-
-        String[] split = permission.split("\\.");
-        if(split.length >= 1)
-        {
-            formattedPermission = split[split.length - 1];
-
-        }
-        return formattedPermission;
     }
 }
