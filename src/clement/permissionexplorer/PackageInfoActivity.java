@@ -53,9 +53,13 @@ public class PackageInfoActivity extends Activity
             appIconView.setImageDrawable(appIcon);
 
             List<Permission> permissions = new ArrayList<Permission>();
-            for(String permission : packageInfo.requestedPermissions)
+
+            if(packageInfo.requestedPermissions != null)
             {
-                permissions.add(new Permission(permission));
+                for(String permission : packageInfo.requestedPermissions)
+                {
+                    permissions.add(new Permission(permission));
+                }
             }
 
             ListView listView = (ListView)findViewById(R.id.permission_list);
