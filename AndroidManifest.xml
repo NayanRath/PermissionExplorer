@@ -12,6 +12,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".PackageInfoActivity"/>
+        <activity android:name=".PackageInfoActivity" android:theme="@android:style/Theme.Holo.NoActionBar"/>
     </application>
 </manifest> 
