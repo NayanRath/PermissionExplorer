@@ -7,8 +7,9 @@
 
     <ImageView
             android:id="@+id/imageView1"
-            android:width="24dp"
-            android:height="24dp"
+            android:adjustViewBounds="true"
+            android:maxWidth="32dp"
+            android:maxHeight="32dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
