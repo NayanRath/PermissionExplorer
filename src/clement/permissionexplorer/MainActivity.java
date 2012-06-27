@@ -5,11 +5,10 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.ListView;
+import android.widget.SearchView;
+
 import java.util.List;
 
 public class MainActivity extends ListActivity
@@ -43,6 +42,29 @@ public class MainActivity extends ListActivity
     {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.action_bar, menu);
+
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+
+        final SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String newText)
+            {
+                PackageInfoAdapter adapter = (PackageInfoAdapter)getListAdapter();
+                adapter.getFilter().filter(newText);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String query)
+            {
+                PackageInfoAdapter adapter = (PackageInfoAdapter)getListAdapter();
+                adapter.getFilter().filter(query);
+                return true;
+            }
+        };
+
+        searchView.setOnQueryTextListener(queryTextListener);
+
         return true;
     }
 

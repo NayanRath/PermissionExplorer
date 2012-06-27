@@ -8,9 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class PackageInfoAdapter extends ArrayAdapter<PackageInfo>
@@ -29,6 +31,7 @@ public class PackageInfoAdapter extends ArrayAdapter<PackageInfo>
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
+
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = layoutInflater.inflate(R.layout.row, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.name);
@@ -75,5 +78,44 @@ public class PackageInfoAdapter extends ArrayAdapter<PackageInfo>
         }
 
         return newValues;
+    }
+
+    @Override
+    public Filter getFilter()
+    {
+        return new Filter()
+        {
+            @Override
+            protected Filter.FilterResults performFiltering(CharSequence charSequence)
+            {
+                FilterResults results = new FilterResults();
+                List<PackageInfo> filteredResults = new ArrayList<PackageInfo>();
+                for(PackageInfo packageInfo: packageInfoList)
+                {
+                    String appName = packageInfo.applicationInfo.loadLabel(getContext().getPackageManager()).toString();
+                    if(appName.contains(charSequence))
+                    {
+                        filteredResults.add(packageInfo);
+                    }
+                }
+
+                results.values =  filteredResults;
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults)
+            {
+                final ArrayList<PackageInfo> localItems = (ArrayList<PackageInfo>) filterResults.values;
+                notifyDataSetChanged();
+                clear();
+
+                for (Iterator iterator = localItems.iterator(); iterator.hasNext();)
+                {
+                    PackageInfo gi = (PackageInfo) iterator.next();
+                    add(gi);
+                }
+            }
+        };
     }
 }
