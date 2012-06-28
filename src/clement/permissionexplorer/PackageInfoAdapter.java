@@ -103,12 +103,14 @@ public class PackageInfoAdapter extends ArrayAdapter<PackageInfo>
             @Override
             protected Filter.FilterResults performFiltering(CharSequence charSequence)
             {
+                String lowerCaseSearchTerm = charSequence.toString().toLowerCase();
+
                 FilterResults results = new FilterResults();
                 List<PackageInfo> filteredResults = new ArrayList<PackageInfo>();
                 for(PackageInfo packageInfo: packageInfoList)
                 {
                     String appName = packageInfo.applicationInfo.loadLabel(getContext().getPackageManager()).toString();
-                    if(appName.contains(charSequence))
+                    if(appName.toLowerCase().contains(lowerCaseSearchTerm))
                     {
                         filteredResults.add(packageInfo);
                     }
