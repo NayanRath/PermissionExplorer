@@ -17,6 +17,12 @@ import java.util.List;
 
 public class PackageInfoAdapter extends ArrayAdapter<PackageInfo>
 {
+    static class ViewHolder
+    {
+        public TextView textView;
+        public ImageView imageView;
+    }
+
     private final Context context;
     private final List<PackageInfo> packageInfoList;
 
@@ -31,16 +37,25 @@ public class PackageInfoAdapter extends ArrayAdapter<PackageInfo>
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
+        View rowView = convertView;
+        if (rowView == null)
+        {
+            LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            rowView = layoutInflater.inflate(R.layout.row, parent, false);
 
-        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = layoutInflater.inflate(R.layout.row, parent, false);
-        TextView textView = (TextView) rowView.findViewById(R.id.name);
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView1);
+            ViewHolder viewHolder = new ViewHolder();
+            viewHolder.textView = (TextView) rowView.findViewById(R.id.name);
+            viewHolder.imageView = (ImageView) rowView.findViewById(R.id.imageView1);
+
+            rowView.setTag(viewHolder);
+        }
+
+        ViewHolder holder = (ViewHolder) rowView.getTag();
 
         String appName = getItem(position).applicationInfo.loadLabel(getContext().getPackageManager()).toString();
         Drawable appIcon =  getItem(position).applicationInfo.loadIcon(getContext().getPackageManager());
-        textView.setText(appName);
-        imageView.setImageDrawable(appIcon);
+        holder.textView.setText(appName);
+        holder.imageView.setImageDrawable(appIcon);
 
         return rowView;
     }
