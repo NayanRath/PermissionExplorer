@@ -11,10 +11,8 @@
 
         <ImageView
                 android:id="@+id/appIcon"
-                android:width="24dp"
-                android:height="24dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_width="64dp"
+                android:layout_height="64dp"/>
 
         <LinearLayout android:layout_width="fill_parent"
                       android:layout_height="wrap_content"
