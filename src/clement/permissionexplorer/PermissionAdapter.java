@@ -15,7 +15,7 @@ public class PermissionAdapter extends ArrayAdapter<Permission>
 
     public PermissionAdapter(Context context, List<Permission> values)
     {
-        super(context, R.layout.row, values);
+        super(context, R.layout.package_info_row, values);
         this.context = context;
         this.values = values;
     }

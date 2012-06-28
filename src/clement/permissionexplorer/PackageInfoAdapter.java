@@ -28,7 +28,7 @@ public class PackageInfoAdapter extends ArrayAdapter<PackageInfo>
 
     public PackageInfoAdapter(Context context, List<PackageInfo> values)
     {
-        super(context, R.layout.row, values);
+        super(context, R.layout.package_info_row, values);
         this.context = context;
 
         packageInfoList = new ArrayList<PackageInfo>(values);
@@ -41,7 +41,7 @@ public class PackageInfoAdapter extends ArrayAdapter<PackageInfo>
         if (rowView == null)
         {
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rowView = layoutInflater.inflate(R.layout.row, parent, false);
+            rowView = layoutInflater.inflate(R.layout.package_info_row, parent, false);
 
             ViewHolder viewHolder = new ViewHolder();
             viewHolder.textView = (TextView) rowView.findViewById(R.id.name);
